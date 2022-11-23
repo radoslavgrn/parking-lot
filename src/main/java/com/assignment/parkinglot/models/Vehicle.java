@@ -1,76 +1,38 @@
 package com.assignment.parkinglot.models;
 
-import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import com.assignment.parkinglot.exceptions.VehicleNotFoundException;
+import java.math.BigDecimal;
+import java.util.Arrays;
 
-@Entity
-@Table(name = "vehicles")
-public class Vehicle {
+public enum Vehicle {
+  CAR("C", BigDecimal.ONE, BigDecimal.TEN),
+  BUS("B", BigDecimal.valueOf(5), BigDecimal.valueOf(40));
+  private final String type;
+  private final BigDecimal hourlyPrice;
+  private final BigDecimal dailyPrice;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
-
-  @Column(name = "plate", length = 30, nullable = false)
-  private String plate;
-
-  @Column(name = "model", length = 30, nullable = false)
-  private String model;
-
-  @Enumerated(EnumType.STRING)
-  private VehicleType vehicleType;
-
-  @Temporal(TemporalType.DATE)
-  private Date dateOfManufacture;
-
-//  @ManyToOne
-//  @JoinColumn(name ="vehicle_id", nullable = false)
-//  private ParkingEntry parkingEntry;
-
-  public Long getId() {
-    return id;
+  Vehicle(final String type, final BigDecimal hourlyPrice, final BigDecimal dailyPrice) {
+    this.type = type;
+    this.hourlyPrice = hourlyPrice;
+    this.dailyPrice = dailyPrice;
   }
 
-  public Vehicle setId(Long id) {
-    this.id = id;
-    return this;
+  public String getType() {
+    return type;
   }
 
-  public String getPlate() {
-    return plate;
+  public BigDecimal getHourlyPrice() {
+    return hourlyPrice;
   }
 
-  public Vehicle setPlate(String plate) {
-    this.plate = plate;
-    return this;
+  public BigDecimal getDailyPrice() {
+    return dailyPrice;
   }
 
-  public VehicleType getVehicleType() {
-    return vehicleType;
-  }
-
-  public Vehicle setVehicleType(VehicleType vehicleType) {
-    this.vehicleType = vehicleType;
-    return this;
-  }
-
-  public Date getDateOfManufacture() {
-    return dateOfManufacture;
-  }
-
-  public Vehicle setDateOfManufacture(Date dateOfManufacture) {
-    this.dateOfManufacture = dateOfManufacture;
-    return this;
+  public static Vehicle findByTypeRaw(String rawType) {
+    return Arrays.stream(Vehicle.values())
+        .filter(v -> v.getType().equalsIgnoreCase(rawType))
+        .findFirst()
+        .orElseThrow(VehicleNotFoundException::new);
   }
 }
