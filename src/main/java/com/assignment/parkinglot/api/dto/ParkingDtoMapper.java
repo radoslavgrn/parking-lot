@@ -17,8 +17,8 @@ public final class ParkingDtoMapper {
     Timestamp entryDate = new Timestamp(System.currentTimeMillis());
 
     Timestamp leaveDate = entry.isDaily()
-        ? new Timestamp(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(1))
-        : new Timestamp(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1));
+        ? new Timestamp(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1))
+        : new Timestamp(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(1));
 
 
     return new Parking(entryDate, leaveDate, entry.isDaily(), false, vehicleType);
