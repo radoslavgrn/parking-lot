@@ -1,6 +1,6 @@
 package com.assignment.parkinglot.models;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,8 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "parking")
@@ -24,11 +22,11 @@ public class Parking {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @Temporal(TemporalType.TIMESTAMP)
-  private Timestamp entryDate;
+  @Column(name = "entry_date", nullable = false)
+  private LocalDateTime entryDate;
 
-  @Temporal(TemporalType.TIMESTAMP)
-  private Timestamp leaveDate;
+  @Column(name = "leave_date", nullable = false)
+  private LocalDateTime leaveDate;
 
   @Column(name = "is_monthly", nullable = false, columnDefinition = "TINYINT", length = 1)
   private boolean isDaily = false;
@@ -43,6 +41,9 @@ public class Parking {
   @Enumerated(EnumType.STRING)
   private Vehicle vehicle;
 
+  @Column(name = "hours", nullable = false)
+  private int hours;
+
   public Long getId() {
     return id;
   }
@@ -52,32 +53,33 @@ public class Parking {
     return this;
   }
 
-  public Parking(Timestamp entryDate, Timestamp leaveDate, boolean isDaily,
-      boolean isArchived, Vehicle vehicle) {
+  public Parking(LocalDateTime entryDate, LocalDateTime leaveDate, boolean isDaily,
+      boolean isArchived, Vehicle vehicle, int hours) {
     this.entryDate = entryDate;
     this.leaveDate = leaveDate;
     this.isDaily = isDaily;
     this.isArchived = isArchived;
     this.vehicle = vehicle;
+    this.hours = hours;
   }
 
   public Parking() {
   }
 
-  public Timestamp getEntryDate() {
+  public LocalDateTime getEntryDate() {
     return entryDate;
   }
 
-  public Parking setEntryDate(Timestamp entryDate) {
+  public Parking setEntryDate(LocalDateTime entryDate) {
     this.entryDate = entryDate;
     return this;
   }
 
-  public Timestamp getLeaveDate() {
+  public LocalDateTime getLeaveDate() {
     return leaveDate;
   }
 
-  public Parking setLeaveDate(Timestamp leaveDate) {
+  public Parking setLeaveDate(LocalDateTime leaveDate) {
     this.leaveDate = leaveDate;
     return this;
   }
@@ -116,5 +118,14 @@ public class Parking {
 
   public boolean isDaily() {
     return isDaily;
+  }
+
+  public int getHours() {
+    return hours;
+  }
+
+  public Parking setHours(int hours) {
+    this.hours = hours;
+    return this;
   }
 }

@@ -4,7 +4,7 @@ import com.assignment.parkinglot.models.Parking;
 import com.assignment.parkinglot.models.Sales;
 import com.assignment.parkinglot.persistence.ParkingRepository;
 import com.assignment.parkinglot.persistence.SalesRepository;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import org.springframework.data.domain.Page;
@@ -28,8 +28,7 @@ public class SalesService {
 
   @Scheduled(fixedRate = 1, timeUnit = TimeUnit.HOURS)
   public void registerSale() {
-    Predicate<Parking> predicate = p -> p.getLeaveDate()
-        .after(new Timestamp(System.currentTimeMillis()));
+    Predicate<Parking> predicate = p -> p.getLeaveDate().isAfter(LocalDateTime.now());
 
     parkingRepository.findAll()
         .parallelStream()
@@ -42,7 +41,7 @@ public class SalesService {
   }
 
   public void registerSale(Parking entry) {
-    Sales newSale = salesRepository.save(new Sales(new Timestamp(System.currentTimeMillis()),
+    Sales newSale = salesRepository.save(new Sales(LocalDateTime.now(),
         entry.isDaily() ? entry.getVehicle().getDailyPrice()
             : entry.getVehicle().getHourlyPrice()));
 

@@ -2,7 +2,6 @@ package com.assignment.parkinglot.services;
 
 import com.assignment.parkinglot.exceptions.CommonException;
 import com.assignment.parkinglot.models.Parking;
-import com.assignment.parkinglot.models.Sales;
 import com.assignment.parkinglot.models.Vehicle;
 import com.assignment.parkinglot.persistence.ParkingRepository;
 import java.util.function.Predicate;

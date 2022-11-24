@@ -3,6 +3,9 @@ package com.assignment.parkinglot.api.dto;
 import com.assignment.parkinglot.models.Parking;
 import com.assignment.parkinglot.models.Vehicle;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.concurrent.TimeUnit;
 
 public final class ParkingDtoMapper {
@@ -14,13 +17,12 @@ public final class ParkingDtoMapper {
   public static Parking toParking(ParkingEntry entry) {
     Vehicle vehicleType = Vehicle.findByTypeRaw(entry.getVehicleType());
 
-    Timestamp entryDate = new Timestamp(System.currentTimeMillis());
+    LocalDateTime entryDate = LocalDateTime.now();
 
-    Timestamp leaveDate = entry.isDaily()
-        ? new Timestamp(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1))
-        : new Timestamp(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(1));
+    LocalDateTime leaveDate = entry.isDaily()
+        ? entryDate.plus(24, ChronoUnit.HOURS)
+        : entryDate.plus(1, ChronoUnit.HOURS);
 
-
-    return new Parking(entryDate, leaveDate, entry.isDaily(), false, vehicleType);
+    return new Parking(entryDate, leaveDate, entry.isDaily(), false, vehicleType, entry.getHours());
   }
 }

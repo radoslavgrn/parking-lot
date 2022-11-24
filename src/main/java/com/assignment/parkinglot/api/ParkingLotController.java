@@ -19,14 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/parking-lot")
-public class ParkingLotResource {
+public class ParkingLotController {
 
   public static final String ENTRIES_API = "/entries";
   public static final String SALES_API = "/sales";
   private final ParkingService parkingService;
   private final SalesService salesService;
 
-  public ParkingLotResource(ParkingService parkingService, SalesService salesService) {
+  public ParkingLotController(ParkingService parkingService, SalesService salesService) {
     this.parkingService = parkingService;
     this.salesService = salesService;
   }
