@@ -1,27 +1,33 @@
 package com.assignment.parkinglot.api.dto;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 public class ParkingEntry {
 
-  private final boolean isDaily;
+  private Boolean isDaily;
 
-  @NotNull(message = "Hours should be present. \n")
   @Positive(message = "Hours should be positive number. \n")
-  private final Integer hours;
+  private Integer hours;
 
   @NotBlank(message = "Vehicle type is mandatory. \n")
-  private final String vehicleType;
+  private String vehicleType;
 
-  public ParkingEntry(boolean isDaily, Integer hours, String vehicleType) {
+  public ParkingEntry() {
+  }
+
+  public ParkingEntry(Boolean isDaily, Integer hours, String vehicleType) {
     this.isDaily = isDaily;
     this.hours = hours;
     this.vehicleType = vehicleType;
   }
 
-  public boolean isDaily() {
+  public ParkingEntry(Boolean isDaily, String vehicleType) {
+    this.isDaily = isDaily;
+    this.vehicleType = vehicleType;
+  }
+
+  public Boolean isDaily() {
     return isDaily;
   }
 
@@ -31,5 +37,20 @@ public class ParkingEntry {
 
   public Integer getHours() {
     return hours;
+  }
+
+  public ParkingEntry setDaily(Boolean daily) {
+    isDaily = daily;
+    return this;
+  }
+
+  public ParkingEntry setHours(Integer hours) {
+    this.hours = hours;
+    return this;
+  }
+
+  public ParkingEntry setVehicleType(String vehicleType) {
+    this.vehicleType = vehicleType;
+    return this;
   }
 }

@@ -28,21 +28,21 @@ public class Parking {
   @Column(name = "leave_date", nullable = false)
   private LocalDateTime leaveDate;
 
-  @Column(name = "is_monthly", nullable = false, columnDefinition = "TINYINT", length = 1)
+  @Column(name = "is_daily", nullable = false, columnDefinition = "TINYINT", length = 1)
   private boolean isDaily = false;
 
   @Column(name = "is_archived", nullable = false, columnDefinition = "TINYINT", length = 1)
   private boolean isArchived = false;
 
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-  @JoinColumn(name = "sales_id", nullable = false)
+  @JoinColumn(name = "sales_id")
   private Sales sales;
 
   @Enumerated(EnumType.STRING)
   private Vehicle vehicle;
 
-  @Column(name = "hours", nullable = false)
-  private int hours;
+  @Column(name = "hours")
+  private Integer hours;
 
   public Long getId() {
     return id;
@@ -120,11 +120,11 @@ public class Parking {
     return isDaily;
   }
 
-  public int getHours() {
+  public Integer getHours() {
     return hours;
   }
 
-  public Parking setHours(int hours) {
+  public Parking setHours(Integer hours) {
     this.hours = hours;
     return this;
   }

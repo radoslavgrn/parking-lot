@@ -2,11 +2,9 @@ package com.assignment.parkinglot.api.dto;
 
 import com.assignment.parkinglot.models.Parking;
 import com.assignment.parkinglot.models.Vehicle;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
-import java.util.concurrent.TimeUnit;
+import org.springframework.util.ObjectUtils;
 
 public final class ParkingDtoMapper {
 
@@ -19,9 +17,11 @@ public final class ParkingDtoMapper {
 
     LocalDateTime entryDate = LocalDateTime.now();
 
-    LocalDateTime leaveDate = entry.isDaily()
+    int hours = ObjectUtils.isEmpty(entry.getHours()) ? 0 : entry.getHours();
+
+    LocalDateTime leaveDate = Boolean.TRUE.equals(entry.isDaily())
         ? entryDate.plus(24, ChronoUnit.HOURS)
-        : entryDate.plus(1, ChronoUnit.HOURS);
+        : entryDate.plus(hours, ChronoUnit.HOURS);
 
     return new Parking(entryDate, leaveDate, entry.isDaily(), false, vehicleType, entry.getHours());
   }

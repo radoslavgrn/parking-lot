@@ -26,7 +26,10 @@ public class SalesService {
     this.salesRepository = salesRepository;
   }
 
-  @Scheduled(fixedRate = 1, timeUnit = TimeUnit.HOURS)
+  /*
+   Extract in a dedicated API and create a better mechanism.
+   */
+  @Scheduled(fixedRate = 5, timeUnit = TimeUnit.MINUTES)
   public void registerSale() {
     Predicate<Parking> predicate = p -> p.getLeaveDate().isAfter(LocalDateTime.now());
 

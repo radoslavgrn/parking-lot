@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 @Service("parkingService")
 @Transactional(rollbackFor = {Exception.class})
@@ -24,18 +25,28 @@ public class ParkingService {
   }
 
   public Parking addParkingEntry(Parking entry) {
+
+    // move all validations to validation component
     if (isParkingFull(entry.getVehicle())) {
       throw new CommonException("Parking is full, please come again later. \n");
+    }
+
+    if (entry.isDaily() && !ObjectUtils.isEmpty(entry.getHours())) {
+      throw new CommonException("When daily chosen, cannot set hours. \n");
+    }
+
+    if (!entry.isDaily() && 0 == entry.getHours()) {
+      throw new CommonException("Either choose daily or set hours. \n");
     }
 
     return parkingRepository.save(entry);
   }
 
   public Page<Parking> getEntries(boolean isArchived, Pageable pageable) {
-    return parkingRepository.findAllByArchivedIs(isArchived, pageable);
+    return parkingRepository.findAllByIsArchived(isArchived, pageable);
   }
 
-  private boolean isParkingFull(Vehicle vehicle) {
+  public boolean isParkingFull(Vehicle vehicle) {
     Predicate<Parking> predicate = p -> !p.isArchived() && p.getVehicle().getType()
         .equalsIgnoreCase(vehicle.getType());
 
